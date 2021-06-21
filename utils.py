@@ -3,6 +3,7 @@ from docx import Document
 from bs4 import BeautifulSoup
 import csv
 import os
+import re
 
 def getPageText(url, arg, type):
   resp = requests.get(url).text
@@ -70,3 +71,31 @@ def writeToCsv(sentencesArr, lng, filename):
       writer = csv.writer(csvfile)
       writer.writerow(row)
 
+# def clean_text(text):
+#   # Remove Emojis
+#   emoji_pattern = re.compile("["
+#   u"\U0001F600-\U0001F64F"  # emoticons
+#   u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+#   u"\U0001F680-\U0001F6FF"  # transport & map symbols
+#   u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+#   u"\U00002702-\U000027B0"
+#   u"\U000024C2-\U0001F251"
+#   "]+", flags=re.UNICODE)
+#   text = emoji_pattern.sub(r'', text)
+#   ## Convert words to lower case and split them
+#   text = text.lower().split()
+#   # Clean the text
+#   text = re.sub(r"[^A-Za-z0-9^,!.\/'+-=]", " ", text)
+#   text = re.sub(r",", " ", text)
+#   text = re.sub(r"!", " ! ", text)
+#   text = re.sub(r"\/", " ", text)
+#   text = re.sub(r"\^", " ^ ", text)
+#   text = re.sub(r"\+", " + ", text)
+#   text = re.sub(r"\-", " - ", text)
+#   text = re.sub(r"\=", " = ", text)
+#   text = re.sub(r"'", " ", text)
+#   text = re.sub(r"(\d+)(k)", r"\g<1>000", text)
+#   text = re.sub(r":", " : ", text)
+#   text = re.sub(r"\0s", "0", text)
+#   text = text.split()
+#   return text
