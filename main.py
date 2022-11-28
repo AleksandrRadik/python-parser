@@ -6,17 +6,22 @@ sg.theme("DarkBlue")
 layout = [
     [
       sg.Frame(layout=[[sg.Radio('Укр', 'rad1', key='ua'),  sg.Radio('Англ', 'rad1', default=True)]],
-      title='Оберіть мову', key='testKey'),
+      title='Оберіть мову'),
       sg.Frame(layout=[[sg.Radio('Web', 'rad2', default=True, key='web', enable_events=True),  sg.Radio('Docx', 'rad2', key='docx', enable_events=True)]],
       title='Оберіть тип парсеру'),
       sg.Frame(layout=[[sg.Radio('1', 'rad3', default=True, key='1'),  sg.Radio('0', 'rad3')]],
       title='Оберіть мітку сегмента')
     ],
-    [sg.Text('URL'), sg.InputText(key='url', disabled=False)],
-    [sg.Text('ID/class'), sg.InputText(key='select', disabled=False), sg.Frame(layout=[[sg.Radio('id', 'rad4', default=True, key='id'),  sg.Radio('class', 'rad4')]],
-      title='Оберіть ідентифікатор блоку'),],
-    [sg.Text('Filepath'), sg.InputText(key='filepath', disabled=False), sg.FileBrowse('Обрати...')
-     ],
+    [
+      sg.Frame(layout=[[sg.Text('URL'), sg.InputText(key='url')],
+      [sg.Text('ID/class'), sg.InputText(key='select'), sg.Frame(layout=[[sg.Radio('id', 'rad4', default=True, key='id'),  sg.Radio('class', 'rad4')]],
+      title='Оберіть ідентифікатор блоку'),]], 
+        title='Ведіть параметри для джерела тексту', key='webParams')
+    ],    
+    [
+      sg.Frame(layout=[[sg.Text('Filepath'), sg.InputText(key='filepath'), sg.FileBrowse('Обрати...')
+     ]], title='Ведіть параметри для джерела тексту', key='docxParams')
+    ],
     [sg.Output(size=(88, 20), key='result')],
     [sg.Text('Output filename'), sg.InputText(key='output')],
     [sg.Button('Відпарсити текст'), sg.Submit('Записати до CSV')]
@@ -34,14 +39,11 @@ while True:
         utils.logger('FINISH_APPLICATION')
         break
     if event == 'web':
-      window['filepath'].Update(disabled = True)
-      window['url'].Update(disabled = False)
-      window['select'].Update(disabled = False)
+      window['docxParams'].hide_row()
+      window['webParams'].show_row()
     if event == 'docx':
-      window['testKey'].hide_row()
-      window['filepath'].Update(disabled = False)
-      window['url'].Update(disabled = True)
-      window['select'].Update(disabled = True)
+      window['docxParams'].show_row()
+      window['webParams'].hide_row()
     if event == 'Відпарсити текст':
       if parsType == 0:
         test = utils.getPageText(values['url'], values['select'], webSelect)
