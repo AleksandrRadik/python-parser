@@ -14,11 +14,17 @@ def getPageText(url, arg, type):
   return soup.get_text()
 
 def getDocxText(filename):
+  logger('Start read docs')
   wordDoc = Document(filename)
   fullText = []
+  logger('Start parse text')
+  logger(len(wordDoc))
+  logger(len(wordDoc.paragraphs))
+  logger(wordDoc.paragraphs)
   for para in wordDoc.paragraphs:
         fullText.append(para.text)
-  print(len(fullText))
+  logger(len(fullText))
+  logger(fullText)
   return '\n'.join(fullText)
 
 def parseText(text):
@@ -53,7 +59,7 @@ def parseText(text):
     idx1 = point
   return sntArr
 
-def writeToCsv(sentencesArr, lng, filename):
+def writeToCsv(sentencesArr, lng, filename, dataType):
   if lng == 0:
     encdoing = 'cp1251'
   elif lng == 1:
@@ -67,9 +73,14 @@ def writeToCsv(sentencesArr, lng, filename):
       writer.writeheader()
 
     for str in sentencesArr:
-      row = [str, "0"]
+      row = [str, dataType]
       writer = csv.writer(csvfile)
       writer.writerow(row)
+
+def logger(logText):
+  with open("logs.txt", "a", encoding='utf-8') as logFile:
+    logFile.write(logText + '\n')
+    
 
 # def clean_text(text):
 #   # Remove Emojis
