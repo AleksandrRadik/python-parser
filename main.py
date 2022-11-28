@@ -16,11 +16,11 @@ layout = [
       sg.Frame(layout=[[sg.Text('URL'), sg.InputText(key='url')],
       [sg.Text('ID/class'), sg.InputText(key='select'), sg.Frame(layout=[[sg.Radio('id', 'rad4', default=True, key='id'),  sg.Radio('class', 'rad4')]],
       title='Оберіть ідентифікатор блоку'),]], 
-        title='Ведіть параметри для джерела тексту', key='webParams')
+        title='Ведіть параметри для джерела тексту', key='webParams', visible = True)
     ],    
     [
       sg.Frame(layout=[[sg.Text('Filepath'), sg.InputText(key='filepath'), sg.FileBrowse('Обрати...')
-     ]], title='Ведіть параметри для джерела тексту', key='docxParams')
+     ]], title='Ведіть параметри для джерела тексту', key='docxParams', visible = False)
     ],
     [sg.Output(size=(88, 20), key='result')],
     [sg.Text('Output filename'), sg.InputText(key='output')],
@@ -39,11 +39,11 @@ while True:
         utils.logger('FINISH_APPLICATION')
         break
     if event == 'web':
-      window['docxParams'].hide_row()
-      window['webParams'].show_row()
+      window['docxParams'].update(visible = False)
+      window['webParams'].update(visible = True)
     if event == 'docx':
-      window['docxParams'].show_row()
-      window['webParams'].hide_row()
+      window['docxParams'].update(visible = True)
+      window['webParams'].update(visible = False)
     if event == 'Відпарсити текст':
       if parsType == 0:
         test = utils.getPageText(values['url'], values['select'], webSelect)
