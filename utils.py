@@ -11,7 +11,6 @@ def getPageText(url, arg, type):
     soup = BeautifulSoup(resp, 'html.parser').find(id=arg)
   elif (type == 1):
     soup = BeautifulSoup(resp, 'html.parser').find(class_=arg)
-
   return soup.get_text()
 
 def getDocxText(filename):
@@ -19,6 +18,7 @@ def getDocxText(filename):
   fullText = []
   for para in wordDoc.paragraphs:
         fullText.append(para.text)
+  print(len(fullText))
   return '\n'.join(fullText)
 
 def parseText(text):
@@ -58,7 +58,7 @@ def writeToCsv(sentencesArr, lng, filename):
     encdoing = 'cp1251'
   elif lng == 1:
     encdoing = 'utf-8'
-  filename = filename + '.csv'
+  filename = filename + '.csv' if(filename) else 'results.csv'
   with open(filename, "a", newline="", encoding=encdoing) as csvfile:
     columns = ['text','target']
     writer = csv.DictWriter(csvfile, fieldnames=columns)
