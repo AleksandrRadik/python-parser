@@ -26,7 +26,7 @@ layout = [
     [sg.Text('Output filename'), sg.InputText(key='output')],
     [sg.Button('Відпарсити текст'), sg.Submit('Записати до CSV')]
 ]
-window = sg.Window('Парсер тексту', layout, resizable=True)
+window = sg.Window('Парсер тексту', layout, resizable=False)
 textArr = []
 while True:
     utils.logger('START_APPLICATION')
