@@ -1,5 +1,6 @@
 import requests
 import tokenize_uk
+import nltk.data
 from docx import Document
 from bs4 import BeautifulSoup
 import csv
@@ -21,52 +22,44 @@ def getDocxText(filename):
     fullText.append(para.text)
   return '\n'.join(fullText)
 
-def parseText(text):
+def parseText(text, lng):
   if text == "":
       return []
   text = text.replace("\n", " ")
   text = text.replace("׳", "")
   text = text.replace("°", "")
   text = text.replace("˚", "")
-  tokenizedSnt = tokenize_uk.tokenize_sents(text)
   result = []
-  for snt in tokenizedSnt:
-    if len(snt) > 10:
-      result.append(snt)
+  if lng == 0:
+    tokenizedSnt = tokenize_uk.tokenize_sents(text)
+    for snt in tokenizedSnt:
+      if len(snt) > 10:
+        result.append(snt)
+  elif lng == 1:
+    tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+    tokenizedSnt = tokenizer.tokenize(text)
+    for snt in tokenizedSnt:
+      if len(snt) > 10:
+        result.append(snt)
   return result
 
 def writeToCsv(sentencesArr, lng, filename, dataType):
-  logger(sentencesArr[182])
-  # logger(sentencesArr[184])
-  logger(str(len(sentencesArr)))
   if lng == 0:
     encdoing = 'cp1251'
   elif lng == 1:
     encdoing = 'utf-8'
-  filename = filename + '.csv' if(filename) else 'results.csv'
-  # with open(filename, "a", encoding=encdoing) as csvfile:
-  #   columns = ['text','target']
-  #   writer = csv.DictWriter(csvfile, fieldnames=columns)
-    
-  #   if os.path.isfile(filename) == False:
-  #     writer.writeheader()
-
-  #   for str in sentencesArr:
-  #     row = [str, dataType]
-  #     writer = csv.writer(csvfile)
-  #     writer.writerow(row)
   with open(filename, "w", newline="", encoding=encdoing) as csvfile:
     columns = ['text','target']
     writer = csv.writer(csvfile, delimiter=",")
     writer.writerow(columns)  # write header
-    writer.writerows(convertTextToCsvRows(sentencesArr, dataType))
-
-def logger(logText):
-  with open("logs.txt", "a", encoding='utf-8') as logFile:
-    logFile.write(logText + '\n')
+    writer.writerows(convertTextToCsvRows(sentencesArr, dataType)) # write data
 
 def convertTextToCsvRows(text, dataType):
   csvRows = []
   for str in text:
       csvRows.append([str, dataType])
   return csvRows
+
+def logger(logText):
+  with open("logs.txt", "a", encoding='utf-8') as logFile:
+    logFile.write(logText + '\n')
