@@ -29,14 +29,12 @@ layout = [
 window = sg.Window('Парсер тексту', layout, resizable=False)
 textArr = []
 while True:
-    utils.logger('START_APPLICATION')
     event, values = window.read()
     lng = 0 if values['ua'] else 1
     parsType = 0 if values['web'] else 1
     dataType = 1 if values['1'] else 0
     webSelect = 0 if values['id'] else 1
     if event in (None, 'Exit', 'Cancel'):
-        utils.logger('FINISH_APPLICATION')
         break
     if event == 'web':
       window['docxParams'].update(visible = False)
@@ -64,9 +62,6 @@ while True:
       if parsType == 1:
         docxText = utils.getDocxText(values['filepath'])
         arrDoc = utils.parseText(docxText)
-        utils.logger('arrdoc')
-        utils.logger(str(len(arrDoc)))
-        utils.logger(arrDoc[0])
         utils.writeToCsv(arrDoc, lng, values['output'], dataType)
       elif len(textArr) > 0:
         utils.writeToCsv(textArr, lng, values['output'], dataType)
