@@ -1,4 +1,5 @@
 import requests
+import tokenize_uk
 from docx import Document
 from bs4 import BeautifulSoup
 import csv
@@ -14,52 +15,58 @@ def getPageText(url, arg, type):
   return soup.get_text()
 
 def getDocxText(filename):
-  logger('Start read docs')
   wordDoc = Document(filename)
   fullText = []
-  logger('Start parse text')
-  logger(len(wordDoc))
-  logger(len(wordDoc.paragraphs))
-  logger(wordDoc.paragraphs)
   for para in wordDoc.paragraphs:
-        fullText.append(para.text)
-  logger(len(fullText))
-  logger(fullText)
+    fullText.append(para.text)
   return '\n'.join(fullText)
 
 def parseText(text):
   if text == "":
       return []
   text = text.replace("\n", " ")
-  text = text.replace(",", "")
-  idx1 = 0
-  idx2 = 0
-  sntArr = []
-  while True:
-    point = text.find(".", idx1+1)
-    if point == -1:
-        break
-    if point == (len(text)-1):
-        if idx2 == 0:
-            ind1 = int((int(idx2)))
-        else:
-            ind1 = int((int(idx2) + 2))
-        ind2 = int((int(point) + 1))
-        sntArr.append(text[ind1:ind2])
-        idx2 = point
-    elif((text[point+2].isupper()) and (text[point-2] != " ") and (text[point-2] != ".") and (text[point-3] != " ") and (text[point-1].isdigit() == False) and (text[point-2].isdigit() == False) ):
-        if idx2 == 0:
-            ind1 = int((int(idx2)))
-        else:
-            ind1 = int((int(idx2) + 2))
-        ind2 = int((int(point)+1))
-        sntArr.append(text[ind1:ind2])
-        idx2 = point
+  # text = text.replace(",", "")
+  # idx1 = 0
+  # idx2 = 0
+  # sntArr = []
+  # while True:
+  #   point = text.find(".", idx1+1)
+  #   if point == -1:
+  #       break
+  #   if point == (len(text)-1):
+  #       if idx2 == 0:
+  #           ind1 = int((int(idx2)))
+  #       else:
+  #           ind1 = int((int(idx2) + 2))
+  #       ind2 = int((int(point) + 1))
+  #       sntArr.append(text[ind1:ind2])
+  #       idx2 = point
+  #   elif((text[point+2].isupper()) and (text[point-2] != " ") and (text[point-2] != ".") and (text[point-3] != " ") and (text[point-1].isdigit() == False) and (text[point-2].isdigit() == False) ):
+  #       if idx2 == 0:
+  #           ind1 = int((int(idx2)))
+  #       else:
+  #           ind1 = int((int(idx2) + 2))
+  #       ind2 = int((int(point)+1))
+  #       sntArr.append(text[ind1:ind2])
+  #       idx2 = point
 
-    idx1 = point
-  return sntArr
+  #   idx1 = point
+  # return sntArr
+  result = tokenize_uk.tokenize_sents(text)
+  # logger('Parse text')
+  # for snt in result:
+  #   logger(snt)
+  logger(str(len(result)))
+  return result
 
 def writeToCsv(sentencesArr, lng, filename, dataType):
+  logger('sentencesArr')
+  logger(sentencesArr[0])
+  try:
+    logger(str(len(sentencesArr)))
+  except:
+    print("Something went wrong")
+  
   if lng == 0:
     encdoing = 'cp1251'
   elif lng == 1:

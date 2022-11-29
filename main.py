@@ -64,6 +64,9 @@ while True:
       if parsType == 1:
         docxText = utils.getDocxText(values['filepath'])
         arrDoc = utils.parseText(docxText)
+        utils.logger('arrdoc')
+        utils.logger(str(len(arrDoc)))
+        utils.logger(arrDoc[0])
         utils.writeToCsv(arrDoc, lng, values['output'], dataType)
       elif len(textArr) > 0:
         utils.writeToCsv(textArr, lng, values['output'], dataType)

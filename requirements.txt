@@ -3,3 +3,4 @@ python-docx == 0.8.11
 bs4 == 0.0.1
 python-csv == 0.0.13
 PySimpleGUI == 4.60.1
+tokenize_uk == 0.2.0
