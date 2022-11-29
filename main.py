@@ -3,6 +3,7 @@ import PySimpleGUI as sg
 
 sg.theme("DarkBlue")
 
+## Layout for ui
 layout = [
     [
       sg.Frame(layout=[[sg.Radio('Укр', 'rad1', key='ua'),  sg.Radio('Англ', 'rad1', default=True)]],
@@ -27,6 +28,16 @@ layout = [
     [sg.Button('Відпарсити текст'), sg.Submit('Записати до CSV')]
 ]
 window = sg.Window('Парсер тексту', layout, resizable=False)
+
+## Array for saving text to csv
+## 
+##
+##
+##
+##
+##
+##
+##
 textArr = []
 while True:
     event, values = window.read()
