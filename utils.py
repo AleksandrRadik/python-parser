@@ -26,6 +26,7 @@ def parseText(text, lng):
   if text == "":
       return []
   text = text.replace("\n", " ")
+  text = text.replace(",", "")
   text = text.replace("׳", "")
   text = text.replace("°", "")
   text = text.replace("˚", "")
@@ -33,13 +34,13 @@ def parseText(text, lng):
   if lng == 0:
     tokenizedSnt = tokenize_uk.tokenize_sents(text)
     for snt in tokenizedSnt:
-      if len(snt) > 10:
+      if len(snt) > 50:
         result.append(snt)
   elif lng == 1:
     tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
     tokenizedSnt = tokenizer.tokenize(text)
     for snt in tokenizedSnt:
-      if len(snt) > 10:
+      if len(snt) > 50:
         result.append(snt)
   return result
 
@@ -49,7 +50,7 @@ def writeToCsv(sentencesArr, lng, filename, dataType):
   elif lng == 1:
     encdoing = 'utf-8'
   with open(filename, "a", newline="", encoding=encdoing) as csvfile:
-    columns = ['text','target']
+    columns = ['text', 'env_problems', 'pollution', 'treatment', 'climate', 'biomonitoring']
     writer = csv.writer(csvfile, delimiter=",")
     writer.writerow(columns)  # write header
     writer.writerows(convertTextToCsvRows(sentencesArr, dataType)) # write data
@@ -57,7 +58,7 @@ def writeToCsv(sentencesArr, lng, filename, dataType):
 def convertTextToCsvRows(text, dataType):
   csvRows = []
   for str in text:
-      csvRows.append([str, dataType])
+      csvRows.append([str, dataType, dataType, dataType, dataType, dataType])
   return csvRows
 
 def logger(logText):
