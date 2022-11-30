@@ -48,7 +48,7 @@ def writeToCsv(sentencesArr, lng, filename, dataType):
     encdoing = 'cp1251'
   elif lng == 1:
     encdoing = 'utf-8'
-  with open(filename, "w", newline="", encoding=encdoing) as csvfile:
+  with open(filename, "a", newline="", encoding=encdoing) as csvfile:
     columns = ['text','target']
     writer = csv.writer(csvfile, delimiter=",")
     writer.writerow(columns)  # write header
