@@ -49,10 +49,12 @@ def writeToCsv(sentencesArr, lng, filename, dataType):
     encdoing = 'cp1251'
   elif lng == 1:
     encdoing = 'utf-8'
+  isPrintColumn = not(os.path.isfile(filename))
   with open(filename, "a", newline="", encoding=encdoing) as csvfile:
     columns = ['text', 'env_problems', 'pollution', 'treatment', 'climate', 'biomonitoring']
     writer = csv.writer(csvfile, delimiter=",")
-    writer.writerow(columns)  # write header
+    if isPrintColumn:
+      writer.writerow(columns)  # write header
     writer.writerows(convertTextToCsvRows(sentencesArr, dataType)) # write data
 
 def convertTextToCsvRows(text, dataType):
