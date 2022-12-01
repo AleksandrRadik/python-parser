@@ -32,7 +32,6 @@ window = sg.Window('Парсер тексту', layout, resizable=False)
 
 ## Array for saving text to csv
 ## Problem to solve:
-# 1. Adding rows withou hadders to exist csv file
 # 2. RegExp for nonUnicode chars
 textArr = []
 try:
