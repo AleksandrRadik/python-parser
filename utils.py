@@ -57,8 +57,9 @@ def writeToCsv(sentencesArr, lng, filename, dataType):
 
 def convertTextToCsvRows(text, dataType):
   csvRows = []
-  for str in text:
-      csvRows.append([str, dataType, dataType, dataType, dataType, dataType])
+  for snt in text:
+      if len(snt) < 500:
+        csvRows.append([snt, dataType, dataType, dataType, dataType, dataType])
   return csvRows
 
 def logger(logText):
